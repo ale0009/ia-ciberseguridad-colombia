@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>¿Qué IA defiende tu empresa sin romper la ley?</title>
+  <meta name="description" content="Describe tu escenario y mira qué ley colombiana aplica (1273, 1581, 1266), qué riesgos trae la IA y qué modelo de pesos abiertos puedes correr en tus equipos, con datos en vivo de Hugging Face. Divulgación, no asesoría legal.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bangers&family=IBM+Plex+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="css/estilo.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F9F9F7'/%3E%3Cpath d='M16 2 28 7v9c0 7-5 12-12 14C9 28 4 23 4 16V7z' fill='%23CB433E' stroke='%230A090A' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cpath d='M11 16l4 4 7-8' stroke='%23FFF' stroke-width='3' fill='none'/%3E%3C/svg%3E">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="saltar" href="#escenario">Saltar al escenario</a>
+  <header class="cabecera">
+    <span class="kanji" aria-hidden="true">盾</span>
+    <div class="titulo">
+      <p class="antetitulo">Ley 1273 · Ley 1581 · Ley 1266 · pesos abiertos en vivo</p>
+      <h1>¿Qué IA defiende tu empresa sin romper la ley?</h1>
+    </div>
+    <nav class="nav">
+      <a class="boton-linea" href="proceso/">Cómo se hizo</a>
+      <button type="button" class="boton-linea" id="tema" aria-label="Cambiar tema">Tema: auto</button>
+    </nav>
+  </header>
+  <p class="franja-aviso"><strong>Divulgación, no asesoría legal.</strong> Las reglas corren en tu navegador, sin IA en la nube: lo que marques no sale de aquí. Para decidir, consulta a un abogado.</p>
+
+  <main class="tablero">
+    <section class="escenario vineta" id="escenario" aria-labelledby="esc-t">
+      <h2 id="esc-t">Tu escenario</h2>
+      <p class="ejemplo" id="ejemplo">Ejemplo cargado: clínica pequeña que quiere filtrar phishing con una API en la nube</p>
+      <form id="form" class="form" autocomplete="off">
+        <fieldset>
+          <legend>¿Qué datos tocará la IA?</legend>
+          <div class="chips" id="f-datos"></div>
+          <p class="ayuda" id="ayuda-datos">Si no marcas nada, se asume que solo verá datos técnicos.</p>
+        </fieldset>
+        <fieldset>
+          <legend>¿Para qué la quieres?</legend>
+          <div class="chips" id="f-caso"></div>
+        </fieldset>
+        <fieldset>
+          <legend>¿Dónde correrá?</legend>
+          <div class="pila" id="f-despliegue"></div>
+        </fieldset>
+        <div class="dos">
+          <label class="campo">Tamaño de la empresa
+            <select id="f-tamano"></select>
+          </label>
+          <label class="campo">Equipo disponible
+            <select id="f-equipo"></select>
+          </label>
+        </div>
+      </form>
+      <div class="acciones">
+        <button type="button" class="mini" id="copiar">Copiar enlace a este escenario</button>
+        <button type="button" class="mini" id="reiniciar">Volver al ejemplo</button>
+        <span class="aviso-copia" id="aviso-copia" aria-live="polite"></span>
+      </div>
+    </section>
+
+    <section class="veredicto vineta" aria-labelledby="ver-t" aria-live="polite">
+      <h2 id="ver-t" class="sr" tabindex="-1">Semáforo legal</h2>
+      <div class="semaforo-fila">
+        <div class="semaforo" id="semaforo" role="img" aria-label="Semáforo">
+          <i class="luz rojo"></i><i class="luz amarillo"></i><i class="luz verde"></i>
+        </div>
+        <div class="veredicto-txt">
+          <p class="onoma" id="onoma">¡ALTO!</p>
+          <p class="sem-titulo" id="sem-titulo">…</p>
+          <p class="sem-puntos"><span id="sem-puntos">–</span> puntos de riesgo legal <span class="escala">(0–2 verde · 3–4 amarillo · 5+ rojo)</span></p>
+        </div>
+      </div>
+      <details class="porque" open>
+        <summary>Por qué este color</summary>
+        <ul id="factores" class="factores"></ul>
+      </details>
+      <div class="hud-nivel">
+        <div class="nivel-cab">
+          <span class="nivel-n" id="nivel-n">Nv. 1</span>
+          <span class="nivel-nombre" id="nivel-nombre">Novato</span>
+          <span class="xp" id="xp">0 / 0 XP</span>
+        </div>
+        <div class="barra-xp" role="progressbar" aria-label="Madurez" aria-valuemin="0" aria-valuemax="100" id="barra-xp"><span id="barra-xp-r"></span></div>
+        <p class="nivel-sig" id="nivel-sig"></p>
+        <p class="logros" id="logros"></p>
+      </div>
+    </section>
+
+    <section class="arquitectura vineta" aria-labelledby="arq-t">
+      <h2 id="arq-t">Arquitectura recomendada</h2>
+      <div class="flujo" id="flujo" aria-hidden="true"></div>
+      <p class="reco" id="reco"></p>
+      <ul class="razones" id="razones"></ul>
+      <button type="button" class="boton-tinta" id="aplicar" hidden>Probar la recomendada</button>
+      <h3 class="kit-t">Tu equipo de IA <span class="estim">(memoria: estimación)</span></h3>
+      <ol class="kit" id="kit"></ol>
+    </section>
+
+    <section class="misiones vineta" aria-labelledby="mis-t">
+      <h2 id="mis-t">Misiones de madurez</h2>
+      <p class="nota">Marca lo que ya tienes. Cada control suma XP y algunos bajan el semáforo.</p>
+      <ul class="lista-mis" id="misiones"></ul>
+    </section>
+
+    <section class="legal vineta" aria-labelledby="leg-t">
+      <h2 id="leg-t">Marco legal colombiano</h2>
+      <p class="leyenda-origen"><span class="tag o-investigacion">De la investigación</span> <span class="tag o-verificado">Verificado en el texto oficial</span> <span class="tag o-por-verificar">Por verificar</span></p>
+      <ol class="normas" id="normas"></ol>
+    </section>
+
+    <section class="riesgos vineta" aria-labelledby="rie-t">
+      <h2 id="rie-t">Riesgos de usar IA aquí</h2>
+      <ol class="lista-riesgos" id="riesgos"></ol>
+    </section>
+
+    <section class="modelos vineta" aria-labelledby="mod-t">
+      <div class="mod-cab">
+        <h2 id="mod-t">Modelos de pesos abiertos</h2>
+        <p class="estado" id="estado" aria-live="polite"><span class="chip chip-carga">Consultando Hugging Face…</span></p>
+      </div>
+      <div class="mod-ctl">
+        <label class="interruptor"><input type="checkbox" id="ver-todos"> Ver los {n} modelos, no solo los del caso</label>
+        <p class="nota">Pesos abiertos = se pueden descargar y correr en tus equipos. No siempre es «código abierto»: Llama y Gemma traen licencias propias con condiciones.</p>
+      </div>
+      <div class="tabla-wrap" tabindex="0" role="region" aria-label="Tabla de modelos">
+        <table class="tabla" id="tabla">
+          <thead><tr>
+            <th scope="col">Modelo</th><th scope="col">Rol</th><th scope="col">Parámetros</th>
+            <th scope="col">Memoria Q4*</th><th scope="col">En tu equipo</th><th scope="col">Licencia</th>
+            <th scope="col">Descargas 30 d</th><th scope="col">Likes</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <p class="nota">* Estimación calculada aquí: parámetros × 4,5 bits ÷ 8, +10 % del motor y 0,8 GB de contexto. «Parcial» = parte del modelo en la RAM (16 GB supuestos): funciona, más lento. Lab = probado en nuestro laboratorio con una GPU de 3 GB.</p>
+    </section>
+  </main>
+
+  <a class="mini-hud" id="mini-hud" href="#ver-t" aria-label="Ir al semáforo"><i class="mh-luz"></i><span id="mh-txt">…</span><span id="mh-nivel">Nv. 1</span></a>
+
+  <footer class="pie">
+    <p><strong>Divulgación, no asesoría legal.</strong> Normas: Ley 1273 de 2009, Ley 1581 de 2012, Decreto 1377 de 2013, Ley 1266 de 2008 y CONPES 3854 de 2016, desde la investigación «Prevención frente a los Delitos Informáticos. Responsabilidad legal en TIC». Riesgos: <a href="https://genai.owasp.org/llm-top-10/">OWASP Top 10 para LLM (2025)</a>, <a href="https://atlas.mitre.org/">MITRE ATLAS</a> y <a href="https://www.nist.gov/itl/ai-risk-management-framework">NIST AI RMF</a>. Modelos: <a href="https://huggingface.co/docs/hub/api">API pública de Hugging Face</a>.</p>
+    <p class="creditos"><a href="https://github.com/ale0009" target="_blank" rel="noopener">Mario Puerta «ale0009»</a> × <a href="https://www.linkedin.com/in/davidalexanderrinconcorredorkuronoma/" target="_blank" rel="noopener">David Rincón «Kuronoma»</a> · <a href="#">Portafolio</a></p>
+  </footer>
+</body>
+</html>

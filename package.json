@@ -1,0 +1,11 @@
+{
+  "name": "ia-ciberseguridad-colombia",
+  "version": "1.0.0",
+  "description": "¿Qué IA defiende tu empresa sin romper la ley? Asistente de reglas (sin IA en la nube) que cruza la ley colombiana (1273, 1581, 1266) con modelos de pesos abiertos traídos en vivo de Hugging Face. Página estática sin build.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "author": "Mario Alejandro Puerta Alarcón",
+  "scripts": { "test": "node --test", "respaldo": "node scripts/generar-respaldo.mjs" },
+  "engines": { "node": ">=20" }
+}

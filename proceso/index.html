@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cómo se hizo · IA, ciberseguridad y ley colombiana</title>
+  <meta name="description" content="La investigación de Mario Puerta y David Rincón sobre delitos informáticos y responsabilidad legal en TIC, el estado del arte de la IA para ciberseguridad y cómo se armó el árbol de decisión de la herramienta.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bangers&family=IBM+Plex+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="../css/estilo.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F9F9F7'/%3E%3Cpath d='M16 2 28 7v9c0 7-5 12-12 14C9 28 4 23 4 16V7z' fill='%23CB433E' stroke='%230A090A' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cpath d='M11 16l4 4 7-8' stroke='%23FFF' stroke-width='3' fill='none'/%3E%3C/svg%3E">
+  <script type="module" src="../js/proceso.js"></script>
+</head>
+<body>
+  <a class="saltar" href="#problema">Saltar al contenido</a>
+  <header class="cabecera">
+    <span class="kanji" aria-hidden="true">法</span>
+    <div class="titulo">
+      <p class="antetitulo">Cómo se hizo · investigación, método y decisiones</p>
+      <h1>IA para defender, ley para no caer</h1>
+    </div>
+    <nav class="nav">
+      <a class="boton-linea" href="../">Volver a la herramienta</a>
+      <button type="button" class="boton-linea" id="tema" aria-label="Cambiar tema">Tema: auto</button>
+    </nav>
+  </header>
+
+  <main class="articulo">
+    <nav class="indice vineta" aria-label="Índice">
+      <ol>
+        <li><a href="#problema">El problema</a></li>
+        <li><a href="#investigacion">La investigación</a></li>
+        <li><a href="#estado-arte">IA para ciberseguridad</a></li>
+        <li><a href="#laboratorio">Nuestro laboratorio</a></li>
+        <li><a href="#arbol">El árbol de decisión</a></li>
+        <li><a href="#graficas">Gráficas</a></li>
+        <li><a href="#diseno">Diseño</a></li>
+        <li><a href="#limitaciones">Limitaciones</a></li>
+        <li><a href="#erratas">Fe de erratas</a></li>
+        <li><a href="#fuentes">Fuentes</a></li>
+      </ol>
+    </nav>
+
+    <section class="bloque" id="problema">
+      <h2>El problema</h2>
+      <p>Una empresa colombiana quiere usar inteligencia artificial para defenderse: filtrar phishing, resumir alertas, clasificar malware. Lo más fácil es pegar los datos en la API de un proveedor en la nube. Pero esos correos y registros traen nombres, cédulas, historias clínicas o datos de crédito, y la ley colombiana tiene mucho que decir sobre adónde pueden viajar.</p>
+      <p>La pregunta de la herramienta es concreta: <strong>¿qué IA puedes usar para defender tu empresa sin crear un problema legal nuevo?</strong> La respuesta corta casi siempre pasa por los <strong>modelos de pesos abiertos</strong>, que se descargan y corren en tus propios equipos, así que los datos no salen de la empresa.</p>
+      <p class="nota-fuente">Glosario rápido. <b>Pesos abiertos:</b> el archivo con lo que el modelo «aprendió» se puede descargar y ejecutar sin internet. <b>API en la nube:</b> envías el texto a un servidor ajeno y te devuelve la respuesta. <b>Cuantización Q4:</b> guardar cada parámetro en unos 4 bits para que el modelo quepa en menos memoria.</p>
+    </section>
+
+    <section class="bloque" id="investigacion">
+      <h2>La investigación de Mario y David</h2>
+      <p>La base legal sale de nuestra investigación «Prevención frente a los Delitos Informáticos. Responsabilidad legal en TIC» (curso de auditoría de seguridad y normas) y de dos trabajos del curso de legislación TIC: un estudio de responsabilidad legal en TIC en Colombia y una presentación sobre la Ley 1266 de 2008 (Habeas Data). El caso de los empleados, las empresas y los compañeros de clase se omite.</p>
+      <div class="dos-col">
+        <div class="vineta cifras">
+          <h3>Cifras que usa la herramienta (de la fuente)</h3>
+          <ul>
+            <li><b>Ley 1273 de 2009:</b> 48 a 96 meses de prisión y 100 a 1.000 SMMLV de multa en la mayoría de los delitos (269A, 269B, 269D, 269G); 36 a 72 meses para la interceptación (269C).</li>
+            <li><b>Ley 1581 de 2012:</b> la SIC puede multar hasta 2.000 SMMLV, suspender el tratamiento y cerrar operaciones.</li>
+            <li><b>Reclamos de titulares:</b> 15 días hábiles. <b>Consultas</b> (Ley 1266): 10 días hábiles.</li>
+            <li><b>Brechas con datos personales:</b> reporte a la SIC en máximo 15 días hábiles (ver fe de erratas).</li>
+            <li><b>CONPES 3854 de 2016:</b> política de seguridad digital con cinco dimensiones.</li>
+          </ul>
+        </div>
+        <div class="vineta cifras">
+          <h3>Lo que añadimos y verificamos aquí</h3>
+          <ul>
+            <li>Los artículos exactos (Ley 1581 arts. 4, 5, 6, 9, 17, 18, 23 y 26; Ley 1266 arts. 7 a 9, 13 y 18; Ley 1273 arts. 269E y 269F) se contrastaron con el texto de la Secretaría del Senado el 10 nov 2026.</li>
+            <li>Las penas de 269E y 269F (48 a 96 meses, 100 a 1.000 SMMLV), que la presentación no detallaba, salen del texto oficial.</li>
+            <li>CONPES 3995 y cualquier guía de IA de la SIC: la fuente no los cita; en la herramienta salen como <span class="por-verificar">por verificar</span>.</li>
+          </ul>
+        </div>
+      </div>
+      <p>La investigación ya anticipaba el tema: en «Tendencias y retos futuros» advierte que la IA se usa para ataques más sofisticados (deepfakes, ingeniería social automatizada) y que hace falta regular la IA junto con la protección de datos. Esta herramienta da la vuelta: usa la IA para defender, sin olvidar esa regulación.</p>
+    </section>
+
+    <section class="bloque" id="estado-arte">
+      <h2>Estado del arte: IA para ciberseguridad</h2>
+      <div class="dos-col">
+        <div class="vineta">
+          <h3><a href="https://www.nist.gov/itl/ai-risk-management-framework">NIST AI RMF 1.0</a></h3>
+          <p>Marco voluntario de gestión de riesgos de IA publicado el 26 de enero de 2023. Organiza el trabajo en cuatro funciones: <b>Gobernar, Mapear, Medir y Gestionar</b>. El 26 de julio de 2024 NIST publicó el perfil para IA generativa (<a href="https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf">NIST AI 600-1</a>). Lo usamos para el riesgo de sesgo («Medir») y para la idea de evaluar antes de desplegar.</p>
+        </div>
+        <div class="vineta">
+          <h3><a href="https://atlas.mitre.org/">MITRE ATLAS</a></h3>
+          <p>Base de conocimiento de tácticas y técnicas de adversarios contra sistemas de IA, en el estilo de MITRE ATT&amp;CK. La citamos para la inyección de instrucciones y la cadena de suministro de modelos: descargar pesos manipulados es un ataque documentado, no una hipótesis.</p>
+        </div>
+      </div>
+      <div class="vineta" style="margin-top:1rem">
+        <h3><a href="https://genai.owasp.org/llm-top-10/">OWASP Top 10 para aplicaciones con LLM (2025)</a></h3>
+        <div class="tabla-wrap">
+          <table class="tabla">
+            <thead><tr><th scope="col">Código</th><th scope="col">Riesgo</th><th scope="col">Dónde aparece en la herramienta</th></tr></thead>
+            <tbody>
+              <tr><td class="num">LLM01</td><td>Inyección de instrucciones (prompt injection)</td><td>Phishing, SOC y chat: el correo o el registro puede traer órdenes para el modelo.</td></tr>
+              <tr><td class="num">LLM02</td><td>Revelación de información sensible</td><td>Fuga de datos al proveedor en la nube.</td></tr>
+              <tr><td class="num">LLM03</td><td>Cadena de suministro</td><td>Pesos descargados de repositorios falsos.</td></tr>
+              <tr><td class="num">LLM04</td><td>Envenenamiento de datos y modelos</td><td>Reentrenar con correos o muestras sin revisar.</td></tr>
+              <tr><td class="num">LLM05</td><td>Manejo inadecuado de la salida</td><td>No se evalúa aparte; queda cubierto por «validar la salida».</td></tr>
+              <tr><td class="num">LLM06</td><td>Agencia excesiva</td><td>SOC y malware: la IA no debe bloquear ni entrar a sistemas sola (arts. 269A y 269B).</td></tr>
+              <tr><td class="num">LLM07</td><td>Filtración del prompt de sistema</td><td>No se evalúa aparte.</td></tr>
+              <tr><td class="num">LLM08</td><td>Debilidades en vectores y embeddings</td><td>Chat y DLP con búsqueda interna.</td></tr>
+              <tr><td class="num">LLM09</td><td>Desinformación</td><td>Alucinaciones: indicadores o CVE inventados.</td></tr>
+              <tr><td class="num">LLM10</td><td>Consumo sin límites</td><td>Factura de la API en la nube.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <h3>Modelos de pesos abiertos: lo que hay</h3>
+      <p>La tabla de la herramienta trae 24 modelos reales de Llama, Mistral, Qwen, Gemma, DeepSeek, IBM Granite, Phi, gpt-oss, Nomic y Foundation-sec, con descargas, likes, licencia y número de parámetros leídos en vivo de la <a href="https://huggingface.co/docs/hub/api">API pública de Hugging Face</a>. Hay tres tipos que interesan a un equipo de seguridad:</p>
+      <ul>
+        <li><b>Especializados en seguridad</b>, como Foundation-Sec-8B: entrenados con texto de ciberseguridad.</li>
+        <li><b>Guardianes</b>, como Llama Guard 3 y Granite Guardian: no conversan, revisan si una entrada o salida es riesgosa.</li>
+        <li><b>Embeddings</b>, como nomic-embed-text o granite-embedding: convierten texto en vectores para clasificar o buscar, con muy poca memoria.</li>
+      </ul>
+      <p>«Pesos abiertos» no siempre quiere decir «código abierto». Apache 2.0 y MIT son licencias permisivas; Llama y Gemma traen licencias propias y Hugging Face pide aceptar sus condiciones antes de descargar. La herramienta lo marca en la columna de licencia.</p>
+    </section>
+
+    <section class="bloque" id="laboratorio">
+      <h2>Lo probamos en nuestro propio laboratorio</h2>
+      <p>No hace falta un centro de datos para empezar. Corrimos varios de estos modelos con Ollama en un portátil con una GPU de apenas <strong>3 GB de VRAM</strong>. Velocidades medidas por nosotros (tokens por segundo, más es mejor):</p>
+      <div class="tabla-wrap">
+        <table class="tabla">
+          <thead><tr><th scope="col">Modelo (Ollama)</th><th scope="col">tok/s</th><th scope="col">Qué pasó</th></tr></thead>
+          <tbody>
+            <tr><td>qwen3:1.7b</td><td class="num">44</td><td>Cabe entero en la GPU: respuestas casi instantáneas.</td></tr>
+            <tr><td>qwen3-vl:2b</td><td class="num">32</td><td>Lee capturas: útil para páginas de phishing.</td></tr>
+            <tr><td>granite4:tiny-h</td><td class="num">30</td><td>No cabe entero, pero es mezcla de expertos: rinde como uno pequeño. El mejor en español de los que probamos.</td></tr>
+            <tr><td>qwen2.5-coder:7b</td><td class="num">8</td><td>Parte en RAM: lento, pero sirve para explicar un script sospechoso.</td></tr>
+            <tr><td>qwen3:8b</td><td class="num">6</td><td>Funciona, pero para uso diario conviene una GPU mayor.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nota-fuente">Medición propia, no una prueba de rendimiento formal. Esos resultados guiaron la regla «cabe / parcial / no cabe» de la herramienta: lo que la fórmula marca como «parcial» en 3 GB es justo lo que vimos correr, más despacio. Los modelos probados llevan la marca <span class="tag lab">Lab</span>.</p>
+    </section>
+
+    <section class="bloque" id="arbol">
+      <h2>Cómo se decidió el árbol</h2>
+      <p>La herramienta no usa IA para recomendar IA: son reglas escritas a mano, legibles y probadas con <code>node --test</code>. Así cada resultado se puede explicar, que es justo lo que la fuente pide a los algoritmos que afectan derechos (transparencia y explicabilidad).</p>
+      <figure class="figura vineta">
+        <h3>Arquitectura recomendada</h3>
+        <svg class="grafica" viewBox="0 0 680 300" role="img" aria-labelledby="arbol-t">
+          <title id="arbol-t">Árbol de decisión: datos sensibles, de salud o financieros llevan a local; datos personales con GPU llevan a local y sin GPU a híbrido; sin datos personales, con GPU local y sin GPU nube</title>
+          <g class="g-nodo"><rect x="210" y="10" width="260" height="44"/><text x="340" y="37" text-anchor="middle" class="g-eti">¿Sensibles, salud o financieros?</text></g>
+          <path class="g-base" d="M300 54 L120 110 M380 54 L470 110" fill="none"/>
+          <text class="g-num" x="190" y="80">sí</text><text class="g-num" x="440" y="80">no</text>
+          <g class="g-hoja g-local"><rect x="40" y="110" width="160" height="44"/><text x="120" y="137" text-anchor="middle" class="g-eti">LOCAL</text></g>
+          <g class="g-nodo"><rect x="380" y="110" width="180" height="44"/><text x="470" y="137" text-anchor="middle" class="g-eti">¿Datos personales?</text></g>
+          <path class="g-base" d="M420 154 L320 200 M520 154 L590 200" fill="none"/>
+          <text class="g-num" x="350" y="178">sí</text><text class="g-num" x="565" y="178">no</text>
+          <g class="g-nodo"><rect x="250" y="200" width="140" height="40"/><text x="320" y="225" text-anchor="middle" class="g-eti">¿Hay GPU?</text></g>
+          <g class="g-nodo"><rect x="530" y="200" width="130" height="40"/><text x="595" y="225" text-anchor="middle" class="g-eti">¿Hay GPU?</text></g>
+          <path class="g-base" d="M285 240 L250 262 M355 240 L390 262 M565 240 L540 262 M625 240 L650 262" fill="none"/>
+          <text class="g-num" x="248" y="254">sí</text><text class="g-num" x="378" y="254">no</text><text class="g-num" x="535" y="254">sí</text><text class="g-num" x="645" y="254">no</text>
+          <g class="g-hoja g-local"><rect x="190" y="262" width="100" height="32"/><text x="240" y="283" text-anchor="middle" class="g-eti">LOCAL</text></g>
+          <g class="g-hoja g-hibrido"><rect x="350" y="262" width="100" height="32"/><text x="400" y="283" text-anchor="middle" class="g-eti">HÍBRIDO</text></g>
+          <g class="g-hoja g-local"><rect x="480" y="262" width="90" height="32"/><text x="525" y="283" text-anchor="middle" class="g-eti">LOCAL</text></g>
+          <g class="g-hoja g-nube"><rect x="590" y="262" width="85" height="32"/><text x="632" y="283" text-anchor="middle" class="g-eti">NUBE</text></g>
+        </svg>
+        <figcaption>Malware siempre suma «laboratorio aislado» y el chat suma «modelo guardián delante». Sin datos personales el riesgo legal baja, pero los registros casi siempre traen usuarios e IP.</figcaption>
+      </figure>
+      <h3>El semáforo legal: puntos que se suman y se restan</h3>
+      <div class="tabla-wrap">
+        <table class="tabla">
+          <thead><tr><th scope="col">Factor</th><th scope="col">Puntos</th><th scope="col">Base</th></tr></thead>
+          <tbody>
+            <tr><td>Hay datos personales</td><td class="num">+1</td><td>Ley 1581</td></tr>
+            <tr><td>Datos sensibles o de salud</td><td class="num">+2</td><td>Ley 1581, arts. 5 y 6</td></tr>
+            <tr><td>Datos financieros</td><td class="num">+1</td><td>Ley 1266</td></tr>
+            <tr><td>Datos personales hacia una API en la nube</td><td class="num">+2</td><td>Ley 1581, art. 26</td></tr>
+            <tr><td>Híbrido (sale algo anonimizado)</td><td class="num">+1</td><td>Riesgo de reidentificación</td></tr>
+            <tr><td>Datos sensibles en la nube</td><td class="num">+1</td><td>Ley 1581, art. 23 (cierre inmediato)</td></tr>
+            <tr><td>SOC o DLP: vigila comunicaciones</td><td class="num">+1</td><td>Ley 1273, art. 269C</td></tr>
+            <tr><td>Manipula malware</td><td class="num">+1</td><td>Ley 1273, art. 269E</td></tr>
+            <tr><td>Chat interno fuera de la empresa</td><td class="num">+1</td><td>OWASP LLM02</td></tr>
+            <tr><td>Autorización y política de tratamiento al día</td><td class="num">−1</td><td>Ley 1581, art. 9; Decreto 1377</td></tr>
+            <tr><td>Contrato con el proveedor (si hay nube)</td><td class="num">−1</td><td>Ley 1581, arts. 17 y 18</td></tr>
+            <tr><td>Política de monitoreo conocida (SOC o DLP)</td><td class="num">−1</td><td>Transparencia</td></tr>
+            <tr><td>Laboratorio aislado (malware)</td><td class="num">−1</td><td>Art. 269E: «sin estar facultado»</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Cortes: 0 a 2 verde, 3 a 4 amarillo, 5 o más rojo. El ejemplo de la portada (clínica pequeña, datos de salud, API en la nube, phishing) suma 6: rojo. Al pasar a local baja a 3 y, con autorización y política al día, a 2: verde. Los pesos son una decisión nuestra, no de la ley: sirven para comparar escenarios, no para medir una multa.</p>
+      <p>El <strong>nivel de madurez</strong> suma XP por cada control que aplica al escenario (once posibles) y sube de nivel cada 20 %: Novato, Aprendiz, Guardián, Centinela y Maestro del dojo.</p>
+    </section>
+
+    <section class="bloque" id="graficas">
+      <h2>Gráficas</h2>
+      <figure class="figura vineta">
+        <h3>¿Qué modelo cabe en qué GPU?</h3>
+        <div id="g-memoria" class="g-caja"></div>
+        <figcaption>Memoria estimada en Q4 (calculada aquí con los parámetros de Hugging Face del <span id="fecha-resp">10 nov 2026</span>). Rojo = no cabe entero en 3 GB. ★ = probado en nuestro laboratorio. DeepSeek-V3 se sale de la escala.</figcaption>
+      </figure>
+      <div class="dos-col">
+        <figure class="figura vineta">
+          <h3>Correr en local baja el riesgo</h3>
+          <div id="g-semaforos" class="g-caja"></div>
+          <figcaption>Puntos del semáforo con datos de salud, por caso: N = nube, H = híbrido, L = local. Sin controles marcados.</figcaption>
+        </figure>
+        <figure class="figura vineta">
+          <h3>Qué norma aplica a cada caso</h3>
+          <div id="g-matriz" class="g-caja"></div>
+          <figcaption>Con datos personales y API en la nube. Ámbar = norma por verificar.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="bloque" id="diseno">
+      <h2>Decisiones de diseño</h2>
+      <ol class="decisiones">
+        <li><b>Sin IA en la nube para hablar de IA en la nube.</b> Las reglas corren en el navegador. Lo único que sale a internet es la consulta pública a Hugging Face, que no lleva ningún dato del visitante.</li>
+        <li><b>Ejemplo que asusta un poco.</b> La portada abre en rojo a propósito: una clínica que manda correos a una API. Un botón muestra cómo cambia todo al correr en local.</li>
+        <li><b>Semáforo y niveles de videojuego.</b> El semáforo resume; el nivel convierte el cumplimiento en misiones con XP, que es más fácil de priorizar que una lista de obligaciones.</li>
+        <li><b>Cada norma dice de dónde sale.</b> Tres etiquetas: de la investigación, verificado en el texto oficial o por verificar. Así nadie confunde lo comprobado con lo pendiente.</li>
+        <li><b>Datos en vivo con respaldo.</b> 24 consultas de 6 en 6, con límite de tiempo. Si fallan, se ve «sin conexión: datos de ejemplo del 10 nov 2026».</li>
+        <li><b>Escenario en el enlace.</b> El estado viaja en el <code>#</code> de la URL, que el navegador nunca envía al servidor.</li>
+      </ol>
+      <div class="dos-col">
+        <div class="vineta">
+          <h3>Paleta</h3>
+          <div class="paleta">
+            <span style="--c:#F9F9F7">Papel <code>#F9F9F7</code></span>
+            <span class="osc" style="--c:#0A090A">Tinta <code>#0A090A</code></span>
+            <span class="osc" style="--c:#CB433E">Rojo <code>#CB433E</code></span>
+            <span style="--c:#438FB8">Cian <code>#438FB8</code></span>
+            <span style="--c:#E3A82B">Ámbar <code>#E3A82B</code></span>
+            <span class="osc" style="--c:#3E8E5A">Verde <code>#3E8E5A</code></span>
+          </div>
+          <p class="nota">Ámbar y verde se añadieron solo para el semáforo. Cada color va con texto (¡ALTO!, ¡OJO!, ¡VAMOS!), así que no depende del color.</p>
+        </div>
+        <div class="vineta">
+          <h3>Versiones</h3>
+          <div class="versiones">
+            <div><div class="muestra">v1 · Cuestionario de 12 preguntas, un resultado al final.</div><p>Descartada: el resultado quedaba lejos y no se veía qué pregunta lo cambiaba.</p></div>
+            <div><div class="muestra">v2 · Tablero: controles a la izquierda, semáforo y arquitectura cambian al instante.</div><p>Elegida: cada clic se ve, y la causa queda escrita en «Por qué este color».</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloque" id="limitaciones">
+      <h2>Limitaciones</h2>
+      <ul>
+        <li><b>No es asesoría legal.</b> Son reglas simplificadas para divulgar; un caso real necesita un abogado.</li>
+        <li>Los puntos del semáforo son una ponderación nuestra, no una fórmula de la ley ni de la SIC.</li>
+        <li>La memoria es una estimación (parámetros × 4,5 bits más un margen). El contexto largo, el motor de inferencia y la cuantización cambian la cifra real.</li>
+        <li>El «rol» de cada modelo sale de su nombre y su tarjeta en Hugging Face; no medimos su calidad en tareas de seguridad.</li>
+        <li>Las descargas de Hugging Face cuentan solo los últimos 30 días y miden popularidad, no calidad.</li>
+        <li>No pudimos abrir desde nuestra red los sitios de la SIC, SUIN-Juriscol, Función Pública ni DNP: el Decreto 1377, el CONPES y las circulares se citan según la investigación.</li>
+      </ul>
+    </section>
+
+    <section class="bloque" id="erratas">
+      <h2>Fe de erratas de la fuente</h2>
+      <div class="vineta errata">
+        <h3>Lo que encontramos al contrastar</h3>
+        <ol>
+          <li><b>Ley 1341, arts. 21 y 23.</b> El trabajo del caso de bloqueo de páginas les atribuye los derechos de los usuarios. En el texto oficial, el 21 trata de las inhabilidades de los comisionados de la CRC y el 23 de la regulación de precios. La neutralidad de la red parece estar en otra norma (art. 56 de la Ley 1450 de 2011): <span class="por-verificar">por verificar</span>.</li>
+          <li><b>Faltas leves, graves y gravísimas (150 / 1.000 / 2.000 SMMLV).</b> El estudio de responsabilidad legal gradúa así las multas de la Ley 1581, pero el art. 23 solo fija un tope de 2.000 SMMLV y el art. 24 da criterios para graduar. No encontramos esa escala en la ley: <span class="por-verificar">por verificar</span>.</li>
+          <li><b>Transferencia internacional.</b> La investigación dice que requiere autorización específica del titular; el estudio dice que a países adecuados puede hacerse «libremente». El art. 26 de la Ley 1581 prohíbe enviar datos a países sin nivel adecuado, y la autorización expresa es una de sus excepciones. Las dos versiones son incompletas.</li>
+          <li><b>Ley 1266, «máximo 18 meses tras la mora».</b> La presentación lo da como plazo para reportar el dato negativo. No aparece en el texto vigente; lo que sí está (art. 13, modificado por la Ley 2157 de 2021) es que el dato negativo permanece el doble de la mora, con máximo 4 años, y caduca a los 8 años: <span class="por-verificar">por verificar</span>.</li>
+          <li><b>Circular Externa 007 de 2018.</b> La investigación se la atribuye a la SIC y le asigna el plazo de 15 días hábiles para reportar brechas. Conviene confirmar el emisor y el número antes de citarla: <span class="por-verificar">por verificar</span>.</li>
+          <li><b>ISO/IEC 27001:2013.</b> La investigación recomienda esa versión «o superior»; la vigente es la de 2022.</li>
+          <li><b>Cifras sin fuente.</b> «Las TIC son cerca del 4,5 % del PIB» y «empresa sancionada con 1.500 SMLMV» no traen referencia, así que la herramienta no las usa.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="bloque" id="fuentes">
+      <h2>Fuentes</h2>
+      <ol class="fuentes">
+        <li>Puerta, M. y Rincón, D. «Prevención frente a los Delitos Informáticos. Responsabilidad legal en TIC». Trabajo académico, auditoría de seguridad y normas.</li>
+        <li>«Responsabilidad legal en tecnologías de la información y comunicación en Colombia» y caso de bloqueo de páginas (Ley 1341). Trabajos académicos, legislación TIC.</li>
+        <li>«Ley 1266 de 2008: Habeas Data en Colombia». Presentación grupal, legislación TIC.</li>
+        <li>Ley 1273 de 2009. <a href="http://www.secretariasenado.gov.co/senado/basedoc/ley_1273_2009.html">secretariasenado.gov.co/senado/basedoc/ley_1273_2009.html</a></li>
+        <li>Ley 1581 de 2012. <a href="http://www.secretariasenado.gov.co/senado/basedoc/ley_1581_2012.html">secretariasenado.gov.co/senado/basedoc/ley_1581_2012.html</a></li>
+        <li>Ley 1266 de 2008 (modificada por la Ley 2157 de 2021). <a href="http://www.secretariasenado.gov.co/senado/basedoc/ley_1266_2008.html">secretariasenado.gov.co/senado/basedoc/ley_1266_2008.html</a></li>
+        <li>Ley 1341 de 2009. <a href="http://www.secretariasenado.gov.co/senado/basedoc/ley_1341_2009.html">secretariasenado.gov.co/senado/basedoc/ley_1341_2009.html</a></li>
+        <li>Decreto 1377 de 2013 y CONPES 3854 de 2016, citados según la investigación. <a href="https://www.suin-juriscol.gov.co/">suin-juriscol.gov.co</a></li>
+        <li>NIST. Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1, 2023. <a href="https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf">nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf</a></li>
+        <li>NIST. Generative Artificial Intelligence Profile, NIST AI 600-1, 2024. <a href="https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf">nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf</a></li>
+        <li>OWASP. Top 10 for LLM Applications 2025. <a href="https://genai.owasp.org/llm-top-10/">genai.owasp.org/llm-top-10</a></li>
+        <li>MITRE. ATLAS: Adversarial Threat Landscape for Artificial-Intelligence Systems. <a href="https://atlas.mitre.org/">atlas.mitre.org</a></li>
+        <li>Hugging Face. Hub API (endpoint público <code>/api/models</code>). <a href="https://huggingface.co/docs/hub/api">huggingface.co/docs/hub/api</a></li>
+      </ol>
+      <a class="volver" href="../">Volver a la herramienta</a>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p><strong>Divulgación, no asesoría legal.</strong> Texto y código: licencia MIT.</p>
+    <p class="creditos"><a href="https://github.com/ale0009" target="_blank" rel="noopener">Mario Puerta «ale0009»</a> × <a href="https://www.linkedin.com/in/davidalexanderrinconcorredorkuronoma/" target="_blank" rel="noopener">David Rincón «Kuronoma»</a> · <a href="#">Portafolio</a></p>
+  </footer>
+</body>
+</html>
