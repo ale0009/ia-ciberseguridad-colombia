@@ -131,3 +131,9 @@ test('evaluar devuelve todas las piezas', () => {
   const r = evaluar(EJEMPLO, 'gpu8');
   for (const k of ['escenario', 'normas', 'semaforo', 'madurez', 'riesgos', 'recomendacion']) assert.ok(r[k], k);
 });
+
+test('fe de erratas: el plazo de 15 días hábiles se cita a la Circular Única de la SIC, no a la CE 007 de 2018', () => {
+  const l = ids({ datos: ['personales'], caso: 'soc' });
+  assert.ok(l.includes('sicIncidentes'));
+  assert.ok(!l.includes('ce0072018'));
+});

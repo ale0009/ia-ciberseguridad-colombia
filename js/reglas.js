@@ -4,7 +4,7 @@
 //
 // origen de cada norma:
 //   'investigacion' → la cita la investigación de Mario y David (fuente del proyecto)
-//   'verificado'    → añadido aquí y contrastado con el texto oficial (Secretaría del Senado, 10 nov 2026)
+//   'verificado'    → añadido aquí y contrastado con el texto oficial (Secretaría del Senado, 10 nov 2026; SIC, 12 nov 2026)
 //   'por-verificar' → la fuente no la cita o no pudimos abrir el texto oficial: hay que confirmarla
 
 const SENADO = 'http://www.secretariasenado.gov.co/senado/basedoc/';
@@ -57,9 +57,9 @@ export const NORMAS = {
   d1377: { ley: 'Decreto 1377 de 2013', art: 'Autorización, políticas y transferencias', origen: 'investigacion',
     url: 'https://www.suin-juriscol.gov.co/',
     porque: 'Exige una política de tratamiento pública y regula cómo se pide la autorización y cómo salen los datos del país.' },
-  ce0072018: { ley: 'Circular Externa 007 de 2018', art: 'Reporte de incidentes (según la investigación)', origen: 'por-verificar',
-    url: 'https://www.sic.gov.co/',
-    porque: 'La investigación indica reportar a la SIC las brechas con datos personales en máximo 15 días hábiles. Ver fe de erratas.' },
+  sicIncidentes: { ley: 'SIC, Circular Única, título V', art: 'Cap. 2, num. 2.1, lit. g): reporte de incidentes de seguridad', origen: 'verificado',
+    url: 'https://sic.gov.co/sites/default/files/normatividad/092017/Titulo%20V%20Proteccion_Datos_Personales.pdf',
+    porque: 'Una brecha que afecte una base de datos personales se reporta al Registro Nacional de Bases de Datos de la SIC dentro de los 15 días hábiles siguientes a su detección. (La investigación lo atribuía a la Circular Externa 007 de 2018, que es de la Superfinanciera: ver fe de erratas.)' },
   '1266-7-9': { ley: 'Ley 1266 de 2008', art: 'Arts. 7, 8 y 9: deberes de operadores, fuentes y usuarios', origen: 'verificado', url: `${SENADO}ley_1266_2008.html`,
     porque: 'La información crediticia solo se usa para fines autorizados y con reserva: no la mandes a un servicio externo sin base.' },
   '1266-18': { ley: 'Ley 1266 de 2008', art: 'Art. 18: sanciones', origen: 'verificado', url: `${SENADO}ley_1266_2008.html`,
@@ -130,7 +130,7 @@ export function marcoLegal(entrada) {
     if (tieneSensibles(e)) ids.push('1581-5-6');
     if (nube) ids.push('1581-17-18');
     if (e.despliegue === 'nube') ids.push('1581-26');
-    ids.push('d1377', '1581-23', '269F', 'ce0072018');
+    ids.push('d1377', '1581-23', '269F', 'sicIncidentes');
   }
   if (e.datos.includes('financieros')) ids.push('1266-7-9', '1266-18');
   if (e.caso === 'phishing') ids.push('269G');
